@@ -51,9 +51,16 @@ class TasksController extends Controller
      //postでtasksにアクセスされた場合の「タスク追加処理」
     public function store(Request $request)
     {
+        //バリデーション
+        $request->validate([
+            "content" => "required",
+            "status" => "required|max:10",
+        ]);
+        
         //タスクを作成して保存
         $task = new Task;
         $task->content = $request->content;
+        $task->status = $request->status;
         $task->save();
         
         //トップページへリダイレクトさせる
@@ -106,11 +113,18 @@ class TasksController extends Controller
      //putまたはpatchでtasks/idにアクセスされた場合の「更新処理」
     public function update(Request $request, $id)
     {
+        //バリデーション
+        $request->validate([
+            "content" => "required",
+            "status" => "required|max:10",
+        ]);
+        
         //idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
         
         //タスク更新
         $task->content = $request->content;
+        $task->status = $request->status;
         $task->save();
         
         //トップページへリダイレクトさせる
